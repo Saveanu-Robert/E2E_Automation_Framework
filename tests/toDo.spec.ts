@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import User from '../models/User';
-import SignupPage from '../pages/SignupPAge';
+import SignupPage from '../pages/SignupPage';
 import TodoPage from '../pages/ToDoPage';
 import NewTodoPage from '../pages/NewToDoPage';
 
