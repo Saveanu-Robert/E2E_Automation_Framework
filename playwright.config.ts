@@ -13,7 +13,7 @@ export default defineConfig({
   retries: process.env.CI ? 3 : 0,
 
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  workers: process.env.CI ? 12 : undefined,
 
   reporter: 'allure-playwright',
 
