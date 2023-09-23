@@ -1,49 +1,42 @@
 import { faker } from '@faker-js/faker';
 
 export default class User {
-	private firstName: string;
-	private lastName: string;
-	private email: string;
-	private password: string;
-	private accessToken: string;
-	private userID: string;
+  private firstName: string = faker.person.firstName();
+  private lastName: string = faker.person.lastName();
+  private email: string = faker.internet.email();
+  private password: string = 'Automation2023';
+  private accessToken: string = '';
+  private userID: string = '';
 
-	constructor() {
-		this.firstName = faker.person.firstName();
-		this.lastName = faker.person.lastName();
-		this.email = faker.internet.email();
-		this.password = 'Automation2023';
-	}
+  getFirstName(): string {
+    return this.firstName;
+  }
 
-	getFirstName() {
-		return this.firstName;
-	}
+  getLastName(): string {
+    return this.lastName;
+  }
 
-	getLastName() {
-		return this.lastName;
-	}
+  getEmail(): string {
+    return this.email;
+  }
 
-	getEmail() {
-		return this.email;
-	}
+  getPassword(): string {
+    return this.password;
+  }
 
-	getPassword() {
-		return this.password;
-	}
+  getAccessToken(): string {
+    return this.accessToken;
+  }
 
-	getAccessToken() {
-		return this.accessToken;
-	}
+  setAccessToken(accessToken: string): void {
+    this.accessToken = accessToken;
+  }
 
-	setAccessToken(accessToken: string) {
-		this.accessToken = accessToken;
-	}
+  getUserID(): string {
+    return this.userID;
+  }
 
-	getUserID() {
-		return this.userID;
-	}
-
-	setUserID(userID: string) {
-		this.userID = userID;
-	}
+  setUserID(userID: string): void {
+    this.userID = userID;
+  }
 }

@@ -1,74 +1,75 @@
 import { APIRequestContext, BrowserContext, Page } from '@playwright/test';
+import { ReportingApi } from '@reportportal/agent-js-playwright';
 import User from '../models/User';
 import UserApi from '../apis/UserApi';
 import config from '../playwright.config';
 
 export default class SignupPage {
-	async load(page: Page) {
-		await page.goto('/signup');
-	}
+  private firstNameInputSelector = `[data-testid=first-name]`;
+  private lastNameInputSelector = `[data-testid=last-name]`;
+  private emailInputSelector = `[data-testid=email]`;
+  private passwordInputSelector = `[data-testid=password]`;
+  private confirmPasswordInputSelector = `[data-testid=confirm-password]`;
+  private submitButtonSelector = `[data-testid=submit]`;
 
-	private get firstNameInput() {
-		return `[data-testid=first-name]`;
-	}
+  async load(page: Page) {
+    try {
+      await page.goto('/signup');
+      ReportingApi.info('Loaded the Signup page.');
+    } catch (error) {
+      ReportingApi.error(`Error loading Signup page: ${error.message}`);
+      throw error;
+    }
+  }
 
-	private get lastNameInput() {
-		return `[data-testid=last-name]`;
-	}
+  async signup(page: Page, user: User) {
+    try {
+      await page.type(this.firstNameInputSelector, user.getFirstName());
+      await page.type(this.lastNameInputSelector, user.getLastName());
+      await page.type(this.emailInputSelector, user.getEmail());
+      await page.type(this.passwordInputSelector, user.getPassword());
+      await page.type(this.confirmPasswordInputSelector, user.getPassword());
+      await page.click(this.submitButtonSelector);
+      ReportingApi.info('User successfully signed up.');
+    } catch (error) {
+      ReportingApi.error(`Error during user signup: ${error.message}`);
+      throw error;
+    }
+  }
 
-	private get emailInput() {
-		return `[data-testid=email]`;
-	}
+  async signupUsingAPI(
+    request: APIRequestContext,
+    user: User,
+    context: BrowserContext
+  ) {
+    try {
+      const response = await new UserApi().signup(request, user);
+      const responseBody = await response.json();
+      const access_token = responseBody.access_token;
+      const firstName = responseBody.firstName;
+      const userID = responseBody.userID;
 
-	private get passwordInput() {
-		return `[data-testid=password]`;
-	}
-
-	private get confirmPasswordInput() {
-		return `[data-testid=confirm-password]`;
-	}
-
-	private get submitButton() {
-		return `[data-testid=submit]`;
-	}
-
-	async signup(page: Page, user: User) {
-		await page.type(this.firstNameInput, user.getFirstName());
-		await page.type(this.lastNameInput, user.getLastName());
-		await page.type(this.emailInput, user.getEmail());
-		await page.type(this.passwordInput, user.getPassword());
-		await page.type(this.confirmPasswordInput, user.getPassword());
-		await page.click(this.submitButton);
-	}
-
-	async signupUsingAPI(
-		request: APIRequestContext,
-		user: User,
-		context: BrowserContext
-	) {
-		const response = await new UserApi().signup(request, user);
-
-		const responseBody = await response.json();
-		const access_token = responseBody.access_token;
-		const firstName = responseBody.firstName;
-		const userID = responseBody.userID;
-
-		await context.addCookies([
-			{
-				name: 'access_token',
-				value: access_token,
-				url: config.use?.baseURL,
-			},
-			{
-				name: 'firstName',
-				value: firstName,
-				url: config.use?.baseURL,
-			},
-			{
-				name: 'userID',
-				value: userID,
-				url: config.use?.baseURL,
-			},
-		]);
-	}
+      await context.addCookies([
+        {
+          name: 'access_token',
+          value: access_token,
+          url: config.use?.baseURL,
+        },
+        {
+          name: 'firstName',
+          value: firstName,
+          url: config.use?.baseURL,
+        },
+        {
+          name: 'userID',
+          value: userID,
+          url: config.use?.baseURL,
+        },
+      ]);
+      ReportingApi.info('User signed up using API.');
+    } catch (error) {
+      ReportingApi.error(`Error during user signup using API: ${error.message}`);
+      throw error;
+    }
+  }
 }

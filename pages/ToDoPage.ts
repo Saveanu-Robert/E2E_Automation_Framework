@@ -1,39 +1,41 @@
 import { Page } from '@playwright/test';
+import { ReportingApi } from '@reportportal/agent-js-playwright';
 
 export default class TodoPage {
-	private get welcomeMessage() {
-		return `[data-testid=welcome]`;
-	}
+  private welcomeMessageSelector = `[data-testid=welcome]`;
+  private deleteIconSelector = '[data-testid=delete]';
+  private noTodosMessageSelector = '[data-testid=no-todos]';
+  private todoItemSelector = '[data-testid=todo-item]';
 
-	private get deleteIcon() {
-		return '[data-testid=delete]';
-	}
+  async load(page: Page) {
+    try {
+      await page.goto('/todo');
+      ReportingApi.info('Loaded the Todo page.');
+    } catch (error) {
+      ReportingApi.error(`Error loading Todo page: ${error.message}`);
+      throw error;
+    }
+  }
 
-	private get noTodosMessage() {
-		return '[data-testid=no-todos]';
-	}
+  getWelcomeMessageElement(page: Page) {
+    return page.locator(this.welcomeMessageSelector);
+  }
 
-	private get todoItem() {
-		return '[data-testid=todo-item]';
-	}
+  async deleteTodo(page: Page) {
+    try {
+      await page.click(this.deleteIconSelector);
+      ReportingApi.info('Deleted a todo item.');
+    } catch (error) {
+      ReportingApi.error(`Error deleting a todo item: ${error.message}`);
+      throw error;
+    }
+  }
 
-	async load(page: Page) {
-		await page.goto('/todo');
-	}
+  async getNoTodosMessage(page: Page) {
+    return page.locator(this.noTodosMessageSelector);
+  }
 
-	getWelcomeMessageElement(page: Page) {
-		return page.locator(this.welcomeMessage);
-	}
-
-	async deleteTodo(page: Page) {
-		await page.click(this.deleteIcon);
-	}
-
-	async getNoTodosMessage(page: Page) {
-		return page.locator(this.noTodosMessage);
-	}
-
-	async getTodoItem(page: Page) {
-		return page.locator(this.todoItem);
-	}
+  async getTodoItem(page: Page) {
+    return page.locator(this.todoItemSelector);
+  }
 }

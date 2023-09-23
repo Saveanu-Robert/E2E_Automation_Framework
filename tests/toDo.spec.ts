@@ -5,50 +5,69 @@ import TodoPage from '../pages/ToDoPage';
 import NewTodoPage from '../pages/NewToDoPage';
 import { ReportingApi } from '@reportportal/agent-js-playwright';
 
+const user = new User();
+const signupPage = new SignupPage();
+const newTodoPage = new NewTodoPage();
+const todoPage = new TodoPage();
+
 test('Add a new ToDo task', async ({ page, request, context }, testInfo) => {
-	const user = new User();
-	const signupPage = new SignupPage();
-	await signupPage.signupUsingAPI(request, user, context);
-	const newTodoPage = new NewTodoPage();
-	await newTodoPage.load(page);
-	await newTodoPage.addTodo(page, 'Learn Automation!');
-	const todoPage = new TodoPage();
-	const todoItem = await todoPage.getTodoItem(page);
-	try {
-		ReportingApi.setTestCaseId('newToDOCaseId');
-		expect(await todoItem.innerText()).toEqual('Learn Automation!');
-		// Capture a screenshot and attach it
-		const screenshot = await page.screenshot();
-		await testInfo.attach('screenshot', { body: screenshot, contentType: 'image/png' });
-		ReportingApi.setStatusPassed();
-	}catch (e) {
-    	console.log((e as Error).message);
-		ReportingApi.setStatusFailed();
-}
-	
+
+  try {
+    // Step 1: Sign up a new user
+    ReportingApi.info('Step 1: Sign up a new user');
+    await signupPage.signupUsingAPI(request, user, context);
+
+    // Step 2: Load the New Todo page
+    ReportingApi.info('Step 2: Load the New Todo page');
+    await newTodoPage.load(page);
+
+    // Step 3: Add a new task
+    ReportingApi.info('Step 3: Add a new task');
+    await newTodoPage.addTodo(page, 'Learn Automation!');
+
+    // Step 4: Verify the added task
+    ReportingApi.info('Step 4: Verify the added task');
+    const todoItem = await todoPage.getTodoItem(page);
+    expect(await todoItem.innerText()).toEqual('Learn Automation!');
+  } catch (error) {
+    // Log the error and set the test status as failed
+    ReportingApi.error(`Step failed: ${error.message}`);
+    const screenshot = await page.screenshot();
+    await testInfo.attach('screenshot', { body: screenshot, contentType: 'image/png' });
+    ReportingApi.setStatusFailed();
+    throw error;
+  }
 });
 
 test('Delete a ToDo task', async ({ page, request, context }, testInfo) => {
-	const user = new User();
-	const signupPage = new SignupPage();
-	await signupPage.signupUsingAPI(request, user, context);
 
-	const newTodoPage = new NewTodoPage();
-	await newTodoPage.addTodoUsingApi(request, user);
+  try {
+    // Step 1: Sign up a new user
+    ReportingApi.info('Step 1: Sign up a new user');
+    await signupPage.signupUsingAPI(request, user, context);
 
-	const todoPage = new TodoPage();
-	await todoPage.load(page);
-	await todoPage.deleteTodo(page);
-	const noTodosMessage = await todoPage.getNoTodosMessage(page);
-	try{
-		ReportingApi.setTestCaseId('deleteToDOCaseId');
-		await expect(noTodosMessage).toBeVisible();
-		// Capture a screenshot and attach it
-		const screenshot = await page.screenshot();
-		await testInfo.attach('screenshot', { body: screenshot, contentType: 'image/png' });
-		ReportingApi.setStatusPassed();
-	}catch (e) {
-    	console.log((e as Error).message);
-		ReportingApi.setStatusFailed();
-	}
+    // Step 2: Add a task using the API
+    ReportingApi.info('Step 2: Add a task using the API');
+    await newTodoPage.addTodoUsingApi(request, user);
+
+    // Step 3: Load the Todo page
+    ReportingApi.info('Step 3: Load the Todo page');
+    await todoPage.load(page);
+
+    // Step 4: Delete a task
+    ReportingApi.info('Step 4: Delete a task');
+    await todoPage.deleteTodo(page);
+
+    // Step 5: Verify no tasks are present
+    ReportingApi.info('Step 5: Verify no tasks are present');
+    const noTodosMessage = await todoPage.getNoTodosMessage(page);
+    expect(await noTodosMessage).toBeVisible();
+  } catch (error) {
+    // Log the error and set the test status as failed
+    ReportingApi.error(`Step failed: ${error.message}`);
+    const screenshot = await page.screenshot();
+    await testInfo.attach('screenshot', { body: screenshot, contentType: 'image/png' });
+    ReportingApi.setStatusFailed();
+    throw error;
+  }
 });
