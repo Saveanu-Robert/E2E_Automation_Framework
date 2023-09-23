@@ -2,19 +2,21 @@ import { defineConfig, devices } from '@playwright/test';
 
 const RPconfig = {
   apiKey: 'playwright-api_IVVPOHxHRp2lFssXXHRDAfltVga6LPdwP10Asu8p764kCKHOCsT9H97pE_78cJDp',
-  endpoint: 'https:/demo.reportportal.io',
-  project: 'default_personal',
-  launch: 'Java launch',
+  endpoint: "https://demo.reportportal.io/api/v1",
+  project: "default_personal",
+  launch: "Launch name",
+  description: "My awesome launch",
   attributes: [
-    {
-      key: 'key',
-      value: 'value',
-    },
-    {
-      value: 'value',
-    },
-  ],
-  description: 'This is a demo run',
+  {
+    key: "attributeKey",
+    value: "attrbiuteValue",
+  },
+  {
+    value: "anotherAttrbiuteValue",
+  },
+],
+
+mode: 'DEFAULT',
 };
 
 export default defineConfig({
