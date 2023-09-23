@@ -1,0 +1,6 @@
+{"type":"rp:addLog","data":{"level":"INFO","message":"Loaded the Signup page."}}{"type":"rp:addLog","data":{"level":"INFO","message":"User successfully signed up."}}{"type":"rp:setTestCaseId","data":"newUserCaseId"}Timed out 5000ms waiting for expect(received).toBeVisible()
+Call log:
+  - expect.toBeVisible with timeout 5000ms
+  - waiting for locator('[data-testid=welcome]')
+
+{"type":"rp:setStatus","data":"failed"}
