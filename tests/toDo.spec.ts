@@ -5,14 +5,14 @@ import TodoPage from '../pages/ToDoPage';
 import NewTodoPage from '../pages/NewToDoPage';
 import { ReportingApi } from '@reportportal/agent-js-playwright';
 
-const user = new User();
-const signupPage = new SignupPage();
-const newTodoPage = new NewTodoPage();
-const todoPage = new TodoPage();
-
-test('Add a new ToDo task', async ({ page, request, context }, testInfo) => {
+test('Add a new ToDo task', async ({ page, request, context }) => {
 
   try {
+    const user = new User();
+    const signupPage = new SignupPage();
+    const newTodoPage = new NewTodoPage();
+    const todoPage = new TodoPage();
+    
     // Step 1: Sign up a new user
     ReportingApi.info('Step 1: Sign up a new user');
     await signupPage.signupUsingAPI(request, user, context);
@@ -37,9 +37,14 @@ test('Add a new ToDo task', async ({ page, request, context }, testInfo) => {
   }
 });
 
-test('Delete a ToDo task', async ({ page, request, context }, testInfo) => {
+test('Delete a ToDo task', async ({ page, request, context }) => {
 
   try {
+    const user = new User();
+    const signupPage = new SignupPage();
+    const newTodoPage = new NewTodoPage();
+    const todoPage = new TodoPage();
+
     // Step 1: Sign up a new user
     ReportingApi.info('Step 1: Sign up a new user');
     await signupPage.signupUsingAPI(request, user, context);
