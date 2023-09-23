@@ -1,4 +1,4 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig, devices, PlaywrightTestConfig } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests',
@@ -50,16 +50,9 @@ export default defineConfig({
        name: 'Mobile Safari',
        use: { ...devices['iPhone 12'] },
      },
-
-    /* Test against branded browsers. */
-    //  {
-    //    name: 'Microsoft Edge',
-    //    use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    //  },
-    //  {
-    //    name: 'Google Chrome',
-    //    use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    //  },
   ],
-
+const config: PlaywrightTestConfig = {
+    reporter: [['@reportportal/agent-js-playwright', RPconfig]],
+    testDir: './tests',
+  };
 });
