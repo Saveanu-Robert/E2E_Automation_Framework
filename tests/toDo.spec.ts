@@ -32,8 +32,6 @@ test('Add a new ToDo task', async ({ page, request, context }, testInfo) => {
   } catch (error) {
     // Log the error and set the test status as failed
     ReportingApi.error(`Step failed: ${error.message}`);
-    const screenshot = await page.screenshot();
-    await testInfo.attach('screenshot', { body: screenshot, contentType: 'image/png' });
     ReportingApi.setStatusFailed();
     throw error;
   }
@@ -65,8 +63,6 @@ test('Delete a ToDo task', async ({ page, request, context }, testInfo) => {
   } catch (error) {
     // Log the error and set the test status as failed
     ReportingApi.error(`Step failed: ${error.message}`);
-    const screenshot = await page.screenshot();
-    await testInfo.attach('screenshot', { body: screenshot, contentType: 'image/png' });
     ReportingApi.setStatusFailed();
     throw error;
   }

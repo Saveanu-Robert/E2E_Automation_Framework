@@ -6,6 +6,8 @@ const RPconfig = {
   project: "default_personal",
   launch: "Launch name",
   description: "My awesome launch",
+  uploadVideo: true,
+  uploadTrace: true,
   attributes: [
   {
     key: "attributeKey",

@@ -14,9 +14,6 @@ test('Register a new user in ToDo web application', async ({ page }, testInfo) =
 	try{
 		ReportingApi.setTestCaseId('newUserCaseId');
 		await expect(welcomeMessage).toBeVisible();
-		// Capture a screenshot and attach it
-		const screenshot = await page.screenshot();
-		await testInfo.attach('screenshot', { body: screenshot, contentType: 'image/png' });
 		ReportingApi.setStatusPassed();
 	}
 	catch (e) {
