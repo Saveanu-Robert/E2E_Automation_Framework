@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 const RPconfig = {
   apiKey: 'playwright-api_IVVPOHxHRp2lFssXXHRDAfltVga6LPdwP10Asu8p764kCKHOCsT9H97pE_78cJDp',
-  endpoint: 'https:/demo.reportportal.io/api/v1',
+  endpoint: 'https:/demo.reportportal.io',
   project: 'default_personal',
   launch: 'E2E_Automation_Framework',
   attributes: [
