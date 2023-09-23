@@ -1,0 +1,11 @@
+{"type":"rp:setTestCaseId","data":"newToDOCaseId"}expect(received).toEqual(expected) // deep equality
+
+- Expected  - 0
++ Received  + 4
+
++
+  Learn Automation!
++
++
++
+{"type":"rp:setStatus","data":"failed"}
