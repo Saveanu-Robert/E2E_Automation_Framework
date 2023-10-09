@@ -1,0 +1,1 @@
+{"type":"rp:addLog","data":{"level":"ERROR","message":"Error loading Signup page: page.goto: Page closed\n=========================== logs ===========================\nnavigating to \"https://qacart-todo.herokuapp.com/signup\", waiting until \"load\"\n============================================================"}}
