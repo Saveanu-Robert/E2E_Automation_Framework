@@ -51,7 +51,6 @@ test('Delete a ToDo task', async ({ page, request, context }) => {
     ReportingApi.info('Step 2: Add a task using the API');
     await newTodoPage.addTodoUsingApi(request, user);
 
-  try {
     // Step 3: Load the Todo page
     ReportingApi.info('Step 3: Load the Todo page');
     await todoPage.load(page);
@@ -60,6 +59,7 @@ test('Delete a ToDo task', async ({ page, request, context }) => {
     ReportingApi.info('Step 4: Delete a task');
     await todoPage.deleteTodo(page);
 
+  try {
     // Step 5: Verify no tasks are present
     ReportingApi.info('Step 5: Verify no tasks are present');
     const noTodosMessage = await todoPage.getNoTodosMessage(page);
