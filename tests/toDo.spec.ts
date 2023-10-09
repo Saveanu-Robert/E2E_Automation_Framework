@@ -39,20 +39,31 @@ test('Add a new ToDo task', async ({ page, request, context }) => {
 
 test('Delete a ToDo task', async ({ page, request, context }) => {
 
-  try {
     const user = new User();
     const signupPage = new SignupPage();
     const newTodoPage = new NewTodoPage();
     const todoPage = new TodoPage();
-
+  try {
     // Step 1: Sign up a new user
     ReportingApi.info('Step 1: Sign up a new user');
     await signupPage.signupUsingAPI(request, user, context);
-
+  } catch (error) {
+    // Log the error and set the test status as failed
+    ReportingApi.error(`Step failed: ${error.message}`);
+    ReportingApi.setStatusFailed();
+    throw error;
+  }
+  try {
     // Step 2: Add a task using the API
     ReportingApi.info('Step 2: Add a task using the API');
     await newTodoPage.addTodoUsingApi(request, user);
-
+  } catch (error) {
+    // Log the error and set the test status as failed
+    ReportingApi.error(`Step failed: ${error.message}`);
+    ReportingApi.setStatusFailed();
+    throw error;
+  }
+  try {
     // Step 3: Load the Todo page
     ReportingApi.info('Step 3: Load the Todo page');
     await todoPage.load(page);
