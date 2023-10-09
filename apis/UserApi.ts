@@ -22,7 +22,7 @@ export default class UserApi {
     } catch (error) {
       // Log the error using ReportPortal
       ReportingApi.error(`Error during user signup: ${error.message}`);
-
+      ReportingApi.setStatusFailed();
       // You can also throw the error if you want to handle it at a higher level.
       throw error;
     }
